@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="888.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniproject2.EmployeeController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="787.0">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" style="-fx-background-color: red;" text="Back" textFill="WHITE" onAction="#handleBack">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Panel" textAlignment="CENTER" wrappingWidth="680.536726474762">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+      <HBox prefHeight="498.0" prefWidth="862.0">
+         <children>
+            <VBox prefHeight="498.0" prefWidth="334.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="45.0" prefWidth="326.0">
+                     <children>
+                        <Label prefHeight="47.0" prefWidth="88.0" text="First Name" textAlignment="CENTER" />
+                        <TextField fx:id="firstNameField" alignment="CENTER" prefHeight="26.0" prefWidth="190.0" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="45.0" prefWidth="326.0">
+                     <children>
+                        <Label prefHeight="47.0" prefWidth="88.0" text="Last Name" textAlignment="CENTER" />
+                        <TextField fx:id="lastNameField" alignment="CENTER" prefHeight="26.0" prefWidth="190.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="45.0" prefWidth="326.0">
+                     <children>
+                        <Label prefHeight="47.0" prefWidth="88.0" text="Age" textAlignment="CENTER" />
+                        <TextField fx:id="ageField" alignment="CENTER" prefHeight="26.0" prefWidth="190.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="45.0" prefWidth="326.0">
+                     <children>
+                        <Label contentDisplay="CENTER" prefHeight="47.0" prefWidth="88.0" text="Salary" textAlignment="CENTER" />
+                        <TextField fx:id="salaryField" alignment="CENTER" prefHeight="26.0" prefWidth="190.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="340.0">
+                     <children>
+                        <Label contentDisplay="CENTER" prefHeight="47.0" prefWidth="88.0" text="Annual Leave" textAlignment="CENTER" />
+                        <TextField fx:id="annualLeaveField" alignment="CENTER" prefHeight="26.0" prefWidth="190.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="76.0" prefWidth="298.0">
+                     <children>
+                        <ButtonBar prefHeight="100.0" prefWidth="100.0">
+                          <buttons>
+                            <Button fx:id="insertButton" mnemonicParsing="false" onAction="#handleInsert" style="-fx-background-color: #4169e1;" text="Insert" textFill="WHITE" />
+                          </buttons>
+                        </ButtonBar>
+                        <ButtonBar prefHeight="100.0" prefWidth="100.0">
+                          <buttons>
+                            <Button fx:id="updateButton" mnemonicParsing="false" onAction="#handleUpdate" style="-fx-background-color: #4169e1;" text="Update" textFill="WHITE" />
+                          </buttons>
+                        </ButtonBar>
+                        <ButtonBar prefHeight="100.0" prefWidth="100.0">
+                          <buttons>
+                            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDelete" style="-fx-background-color: red;" text="Delete" textFill="WHITE" />
+                          </buttons>
+                        </ButtonBar>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <TableView fx:id="employeeTable" prefHeight="494.0" prefWidth="510.0">
+              <columns>
+                <TableColumn fx:id="firstNameCol" prefWidth="120.79998624324799" text="First Name" />
+                <TableColumn fx:id="lastNameCol" prefWidth="116.00000762939453" text="Last Name" />
+                  <TableColumn fx:id="ageCol" prefWidth="88.0" text="Age" />
+                  <TableColumn fx:id="salaryCol" prefWidth="83.199951171875" text="Salary" />
+                  <TableColumn fx:id="leaveCol" prefWidth="107.19992065429688" text="Annual Leave" />
+              </columns>
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </TableView>
+         </children>
+      </HBox>
+   </children>
+</VBox>
