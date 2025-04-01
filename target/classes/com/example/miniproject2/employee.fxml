@@ -12,11 +12,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="888.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniproject2.EmployeeController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="888.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniproject2.EmployeeController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="787.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" style="-fx-background-color: red;" text="Back" textFill="WHITE" onAction="#handleBack">
+            <Button mnemonicParsing="false" onAction="#handleBack" prefHeight="26.0" prefWidth="82.0" style="-fx-background-color: red;" text="Back" textFill="WHITE">
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>

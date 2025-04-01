@@ -24,7 +24,8 @@ public class SignInController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        if (username.equals("admin") && password.equals("password")) {
+        if (username.equals("admin") && password.equals("password")
+                || username.equals("admin1") && password.equals("password1")) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("HomeView.fxml"));
             Parent root = loader.load();
 

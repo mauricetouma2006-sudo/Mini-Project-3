@@ -19,6 +19,10 @@ public class Employee {
         return firstName;
     }
 
+    public String getFirstNameProperty() {
+        return firstName;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -27,28 +31,44 @@ public class Employee {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getLastNameProperty() {
+        return lastName;
     }
 
     public int getAge() {
         return age;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public int getAgeProperty() {
+        return age;
     }
 
     public double getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
-        this.salary = salary;
+    public double getSalaryProperty() {
+        return salary;
     }
 
     public int getAnnualLeave() {
         return annualLeave;
+    }
+
+    public int getAnnualLeaveProperty() {
+        return annualLeave;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 
     public void setAnnualLeave(int annualLeave) {

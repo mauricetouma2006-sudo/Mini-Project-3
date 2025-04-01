@@ -30,18 +30,26 @@ public class HomeController {
     }
 
     @FXML
-    private void handleLogout(ActionEvent event) throws IOException {
-        System.out.println("Logging out...");
-
-        // Load the Sign-In view
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sign-in.fxml"));
+    private void handleInventoryEntities(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
         Parent root = loader.load();
 
         // Get the current stage and set the new scene
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
+        stage.setTitle("Inventory Management");
+        stage.show();
+    }
+
+    @FXML
+    private void handleLogout(ActionEvent event) throws IOException {
+        System.out.println("Logging out...");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("sign-in.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
         stage.setTitle("Sign In");
         stage.show();
-        stage.setResizable(false);
     }
 }
