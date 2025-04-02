@@ -42,6 +42,18 @@ public class HomeController {
     }
 
     @FXML
+    private void handleOrdersEntities(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("order-view.fxml"));
+        Parent root = loader.load();
+
+        // Get the current stage and set the new scene
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Order Management");
+        stage.show();
+    }
+
+    @FXML
     private void handleLogout(ActionEvent event) throws IOException {
         System.out.println("Logging out...");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sign-in.fxml"));
@@ -52,4 +64,17 @@ public class HomeController {
         stage.setTitle("Sign In");
         stage.show();
     }
+
+    @FXML
+    private void handlePersonEntities(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("persons-view.fxml"));
+        Parent root = loader.load();
+
+        // Get the current stage and set the new scene
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Customer Management");
+        stage.show();
+    }
+
 }
