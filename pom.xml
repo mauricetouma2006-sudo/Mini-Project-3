@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>MiniProject2</artifactId>
+    <artifactId>MiniProject3</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Mini Project 2</name>
+    <name>Mini Project 3</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
