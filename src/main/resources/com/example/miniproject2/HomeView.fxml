@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="597.0" prefWidth="868.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniproject2.HomeController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="598.0" prefWidth="366.0">
+         <children>
+            <ImageView fitHeight="321.0" fitWidth="365.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../../../images/img.jpg" />
+               </image>
+            </ImageView>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Company Management System" textAlignment="CENTER" wrappingWidth="310.9367980957031">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="598.0" prefWidth="358.0" spacing="20">
+         <children>
+            <Button onAction="#handleEmployeesEntities" prefHeight="30.0" prefWidth="180.0" style="-fx-font-size: 14px; -fx-background-color: #4169e1;" text="Employees" textFill="WHITE" />
+            <Button onAction="#handleInventoryEntities" prefHeight="30.0" prefWidth="180.0" style="-fx-font-size: 14px; -fx-background-color: #4169e1;" text="Inventory" textFill="WHITE" />
+            <Button onAction="#handleOrdersEntities" prefHeight="30.0" prefWidth="180.0" style="-fx-font-size: 14px; -fx-background-color: #4169e1;" text="Orders" textFill="WHITE" />
+            <Button onAction="#handlePersonEntities" prefHeight="30.0" prefWidth="180.0" style="-fx-font-size: 14px; -fx-background-color: #4169e1;" text="Customers" textFill="WHITE" />
+            <Button onAction="#handleSupplierEntities" prefHeight="30.0" prefWidth="180.0" style="-fx-font-size: 14px; -fx-background-color: #4169e1;" text="Suppliers" textFill="WHITE" />
+            <Button onAction="#handleLogout" prefHeight="30.0" prefWidth="180.0" style="-fx-font-size: 14px; -fx-background-color: red;" text="Logout" textFill="WHITE" />
+         </children>
+      </VBox>
+   </children>
+</HBox>
