@@ -54,6 +54,18 @@ public class HomeController {
     }
 
     @FXML
+    private void handleSupplierEntities(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("supplier-view.fxml"));
+        Parent root = loader.load();
+
+        // Get the current stage and set the new scene
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Supplier Management");
+        stage.show();
+    }
+
+    @FXML
     private void handleLogout(ActionEvent event) throws IOException {
         System.out.println("Logging out...");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sign-in.fxml"));

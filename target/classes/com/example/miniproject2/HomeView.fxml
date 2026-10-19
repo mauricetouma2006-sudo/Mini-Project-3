@@ -30,6 +30,7 @@
             <Button onAction="#handleInventoryEntities" prefHeight="30.0" prefWidth="180.0" style="-fx-font-size: 14px; -fx-background-color: #4169e1;" text="Inventory" textFill="WHITE" />
             <Button onAction="#handleOrdersEntities" prefHeight="30.0" prefWidth="180.0" style="-fx-font-size: 14px; -fx-background-color: #4169e1;" text="Orders" textFill="WHITE" />
             <Button onAction="#handlePersonEntities" prefHeight="30.0" prefWidth="180.0" style="-fx-font-size: 14px; -fx-background-color: #4169e1;" text="Customers" textFill="WHITE" />
+            <Button onAction="#handleSupplierEntities" prefHeight="30.0" prefWidth="180.0" style="-fx-font-size: 14px; -fx-background-color: #4169e1;" text="Suppliers" textFill="WHITE" />
             <Button onAction="#handleLogout" prefHeight="30.0" prefWidth="180.0" style="-fx-font-size: 14px; -fx-background-color: red;" text="Logout" textFill="WHITE" />
          </children>
       </VBox>
