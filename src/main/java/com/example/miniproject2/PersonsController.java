@@ -1,12 +1,19 @@
 package com.example.miniproject2;
 
+import java.io.IOException;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 public class PersonsController {
 
@@ -96,6 +103,8 @@ public class PersonsController {
             c2.setSelected(true);
         else if (status.equals("divorced"))
             c3.setSelected(true);
+        else
+            statusGroup.selectToggle(null);
     }
 
     @FXML
@@ -103,7 +112,7 @@ public class PersonsController {
         String error = "";
         boolean isValid = true;
 
-        String name = nameFld.getText();
+        String name = nameFld.getText().trim();
         if (name.isEmpty()) {
             error += "Error: Name is required\n";
             isValid = false;
@@ -121,7 +130,7 @@ public class PersonsController {
                 isValid = false;
             }
 
-        String address = addressFld.getText();
+        String address = addressFld.getText().trim();
         if (address.isEmpty()) {
             error += "Error: Address is required\n";
             isValid = false;
@@ -138,6 +147,7 @@ public class PersonsController {
             nameFld.setText("");
             ageFld.setText("");
             addressFld.setText("");
+            statusGroup.selectToggle(null);
             errorMsg.setText("");
         } else
             errorMsg.setText(error);
@@ -150,7 +160,9 @@ public class PersonsController {
 
         if (selectedPerson != null) {
             personStore.deletePerson(selectedPerson);
-
+            errorMsg.setText("");
+        } else {
+            errorMsg.setText("Please select a customer to delete.");
         }
     }
 
@@ -163,7 +175,7 @@ public class PersonsController {
             String error = "";
             boolean isValid = true;
 
-            String name = nameFld.getText();
+            String name = nameFld.getText().trim();
             if (name.isEmpty()) {
                 error += "Error: Name is required!\n";
                 isValid = false;
@@ -181,13 +193,17 @@ public class PersonsController {
                     isValid = false;
                 }
 
-            String address = addressFld.getText();
+            String address = addressFld.getText().trim();
             if (address.isEmpty()) {
                 error += "Error: Address is required!";
                 isValid = false;
             }
 
             String status = getSelectedStatus(); // Use this instead of the above code
+            if (status.isEmpty()) {
+                error += "Status is required.\n";
+                isValid = false;
+            }
 
             if (isValid) {
                 personStore.updatePerson(selectedPerson, name, age, address, status);
@@ -197,8 +213,18 @@ public class PersonsController {
             } else
                 errorMsg.setText(error);
 
+        } else {
+            errorMsg.setText("Please select a customer to update.");
         }
 
     }
 
+    @FXML
+    private void goHome(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Home Page");
+        stage.show();
+    }
 }

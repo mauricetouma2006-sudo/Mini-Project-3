@@ -17,6 +17,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="603.0" prefWidth="800.0" style="-fx-background-color: #D32F2F;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniproject2.PersonsController">
+    <Button layoutX="20.0" layoutY="257.0" onAction="#goHome" style="-fx-background-color: #1d4e89;" text="Back to Home" textFill="WHITE" />
     <Label fx:id="errorMsg" layoutX="433.0" layoutY="240.0" prefHeight="55.0" prefWidth="347.0" wrapText="true" />
     <Label alignment="CENTER" contentDisplay="CENTER" layoutX="11.2" layoutY="-4.8" prefHeight="55.0" prefWidth="781.0" text="Customer Management" textFill="#1d4e89" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="-5.0">
         <font>
@@ -86,7 +87,7 @@
       </cursor></Button>
    <ImageView fitHeight="124.0" fitWidth="134.0" layoutX="524.0" layoutY="78.0" pickOnBounds="true" preserveRatio="true">
       <image>
-         <Image url="@../../../../images/office-man.png" />
+         <Image url="@../../../images/office-man.png" />
       </image>
    </ImageView>
 
