@@ -44,7 +44,7 @@
                                 <Image url="@../../../../images/inventory.png" />
                             </image>
                         </ImageView>
-                        <Label alignment="CENTER" prefHeight="40.0" prefWidth="114.0" text="EAC" GridPane.rowIndex="2">
+                        <Label alignment="CENTER" prefHeight="40.0" prefWidth="114.0" text="EAN" GridPane.rowIndex="2">
                             <font>
                                 <Font size="18.0" />
                             </font>
@@ -91,6 +91,13 @@
                         <Button fx:id="deleteBtn" onAction="#deleteItem" prefHeight="50.0" prefWidth="100.0" text="Delete">
                      <HBox.margin>
                         <Insets left="30.0" top="30.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
+                        <Button fx:id="backBtn" onAction="#handleBack" prefHeight="50.0" prefWidth="80.0" style="-fx-background-color: red; -fx-text-fill: white;" text="Back">
+                     <HBox.margin>
+                        <Insets left="15.0" top="30.0" />
                      </HBox.margin>
                      <font>
                         <Font size="18.0" />

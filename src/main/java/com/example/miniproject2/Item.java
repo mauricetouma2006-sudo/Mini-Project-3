@@ -2,28 +2,28 @@ package com.example.miniproject2;
 
 import javafx.beans.property.*;
 
-public class item {
-    private final SimpleIntegerProperty ean;
+public class Item {
+    private final SimpleLongProperty ean;
     private final SimpleStringProperty name;
     private final SimpleDoubleProperty price;
     private final SimpleIntegerProperty stock;
 
-    public item(int ean, String name, double price, int stock) {
-        this.ean = new SimpleIntegerProperty(ean);
+    public Item(long ean, String name, double price, int stock) {
+        this.ean = new SimpleLongProperty(ean);
         this.name = new SimpleStringProperty(name);
         this.price = new SimpleDoubleProperty(price);
         this.stock = new SimpleIntegerProperty(stock);
     }
 
-    public int getEAN() {
+    public long getEAN() {
         return ean.get();
     }
 
-    public void setEAN(int ean) {
+    public void setEAN(long ean) {
         this.ean.set(ean);
     }
 
-    public IntegerProperty eanProperty() {
+    public LongProperty eanProperty() {
         return ean;
     }
 

@@ -1,12 +1,19 @@
 package com.example.miniproject2;
 
+import java.io.IOException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class itemController {
 
@@ -14,27 +21,27 @@ public class itemController {
     private Button addbtn, updateBtn, deleteBtn;
 
     @FXML
-    private TableColumn<item, Integer> EANcol;
+    private TableColumn<Item, Long> EANcol;
 
     @FXML
     private TextField eanFld, nameFld, priceFld, stockFld;
 
     @FXML
-    private TableColumn<item, String> nameCol;
+    private TableColumn<Item, String> nameCol;
 
     @FXML
-    private TableColumn<item, Double> priceCol;
+    private TableColumn<Item, Double> priceCol;
 
     @FXML
-    private TableColumn<item, Integer> stockCol;
+    private TableColumn<Item, Integer> stockCol;
 
     @FXML
-    private TableView<item> itemsTable;
+    private TableView<Item> itemsTable;
 
     @FXML
     private Label errorMsg;
     private final itemStore ic = new itemStore();
-    private final ObservableList<item> itemsList = ic.getItems();
+    private final ObservableList<Item> itemsList = ic.getItems();
 
     @FXML
     public void initialize() {
@@ -47,7 +54,7 @@ public class itemController {
 
         itemsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                eanFld.setText(Integer.toString(newSelection.getEAN()));
+                eanFld.setText(Long.toString(newSelection.getEAN()));
                 nameFld.setText(newSelection.getName());
                 priceFld.setText(Double.toString(newSelection.getPrice()));
                 stockFld.setText(Integer.toString(newSelection.getStock()));
@@ -65,9 +72,9 @@ public class itemController {
         boolean isValid = true;
         String error = "";
 
-        int EAN = 0;
+        long EAN = 0;
         try {
-            EAN = Integer.parseInt(eanFld.getText().trim());
+            EAN = Long.parseLong(eanFld.getText().trim());
         } catch (NumberFormatException e) {
             error += "EAN must be a valid number.\n";
             isValid = false;
@@ -96,7 +103,7 @@ public class itemController {
         }
 
         if (isValid) {
-            item newItem = new item(EAN, name, price, stock);
+            Item newItem = new Item(EAN, name, price, stock);
             ic.addItem(newItem); // Ensure item is added to itemStore
             itemsTable.setItems(FXCollections.observableArrayList(ic.getItems())); // Refresh table
             itemsTable.refresh();
@@ -109,14 +116,14 @@ public class itemController {
 
     @FXML
     void updateItem(ActionEvent event) {
-        item selectedItem = itemsTable.getSelectionModel().getSelectedItem();
+        Item selectedItem = itemsTable.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             errorMsg.setText("No item selected for update.");
             return;
         }
 
         try {
-            int EAN = Integer.parseInt(eanFld.getText().trim());
+            long EAN = Long.parseLong(eanFld.getText().trim());
             String name = nameFld.getText().trim();
             double price = Double.parseDouble(priceFld.getText().trim());
             int stock = Integer.parseInt(stockFld.getText().trim());
@@ -135,7 +142,7 @@ public class itemController {
 
     @FXML
     void deleteItem(ActionEvent event) {
-        item selectedItem = itemsTable.getSelectionModel().getSelectedItem();
+        Item selectedItem = itemsTable.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             errorMsg.setText("No item selected for deletion.");
             return;
@@ -146,6 +153,17 @@ public class itemController {
         itemsTable.setItems(FXCollections.observableArrayList(ic.getItems()));
         itemsTable.refresh();
         clearFields();
+    }
+
+    @FXML
+    private void handleBack(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("HomeView.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Home View");
+        stage.show();
     }
 
     private void clearFields() {
