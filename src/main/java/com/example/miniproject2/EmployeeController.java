@@ -2,68 +2,59 @@ package com.example.miniproject2;
 
 import java.io.IOException;
 
-import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.scene.layout.VBox;
-import javafx.event.ActionEvent;
 
-public class EmployeeController extends Application {
+/**
+ * Controller for employee.fxml. It only talks to the Employee and
+ * EmployeeStore models and never stores the data itself.
+ */
+public class EmployeeController {
 
-    @FXML
-    private TextField firstNameField;
-    @FXML
-    private TextField lastNameField;
-    @FXML
-    private TextField ageField;
-    @FXML
-    private TextField salaryField;
-    @FXML
-    private TextField annualLeaveField;
-    @FXML
-    private TableView<Employee> employeeTable;
-    @FXML
-    private TableColumn<Employee, String> firstNameCol;
-    @FXML
-    private TableColumn<Employee, String> lastNameCol;
-    @FXML
-    private TableColumn<Employee, Integer> ageCol;
-    @FXML
-    private TableColumn<Employee, Double> salaryCol;
-    @FXML
-    private TableColumn<Employee, Integer> leaveCol;
+    @FXML private TextField firstNameField;
+    @FXML private TextField lastNameField;
+    @FXML private TextField ageField;
+    @FXML private TextField salaryField;
+    @FXML private TextField annualLeaveField;
+    @FXML private TableView<Employee> employeeTable;
+    @FXML private TableColumn<Employee, String> firstNameCol;
+    @FXML private TableColumn<Employee, String> lastNameCol;
+    @FXML private TableColumn<Employee, Integer> ageCol;
+    @FXML private TableColumn<Employee, Double> salaryCol;
+    @FXML private TableColumn<Employee, Integer> leaveCol;
 
-    private ObservableList<Employee> employeeList = FXCollections.observableArrayList();
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("employee.fxml"));
-        loader.setController(this);
-        VBox root = loader.load();
-
-        primaryStage.setTitle("Employee Management");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
-    }
+    private final EmployeeStore store = EmployeeStore.getInstance();
 
     @FXML
     private void initialize() {
-        // Setup Table Columns
         firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         ageCol.setCellValueFactory(new PropertyValueFactory<>("age"));
         salaryCol.setCellValueFactory(new PropertyValueFactory<>("salary"));
         leaveCol.setCellValueFactory(new PropertyValueFactory<>("annualLeave"));
 
-        employeeTable.setItems(employeeList);
+        employeeTable.setItems(store.getEmployees());
+
+        // Selecting a row fills the form so the user can edit it, then press Update
+        employeeTable.getSelectionModel().selectedItemProperty().addListener((obs, old, selected) -> {
+            if (selected != null) {
+                firstNameField.setText(selected.getFirstName());
+                lastNameField.setText(selected.getLastName());
+                ageField.setText(String.valueOf(selected.getAge()));
+                salaryField.setText(String.valueOf(selected.getSalary()));
+                annualLeaveField.setText(String.valueOf(selected.getAnnualLeave()));
+            }
+        });
     }
 
     @FXML
@@ -79,59 +70,73 @@ public class EmployeeController extends Application {
 
     @FXML
     private void handleInsert(ActionEvent event) {
-        String firstName = firstNameField.getText();
-        String lastName = lastNameField.getText();
-
-        // Prevent NumberFormatException by adding input validation
-        if (firstName.isEmpty() || lastName.isEmpty() ||
-                ageField.getText().isEmpty() || salaryField.getText().isEmpty()
-                || annualLeaveField.getText().isEmpty()) {
-            showAlert("Error", "Please fill in all fields!");
+        Employee input = readForm();
+        if (input == null) {
             return;
         }
-
-        try {
-            int age = Integer.parseInt(ageField.getText());
-            double salary = Double.parseDouble(salaryField.getText());
-            int annualLeave = Integer.parseInt(annualLeaveField.getText());
-
-            Employee newEmployee = new Employee(firstName, lastName, age, salary, annualLeave);
-            employeeList.add(newEmployee);
-            employeeTable.refresh(); // Ensure the table updates
-            clearFields();
-        } catch (NumberFormatException e) {
-            showAlert("Invalid Input", "Please enter valid numeric values for Age, Salary, and Annual Leave.");
-        }
+        store.addEmployee(input);
+        clearFields();
     }
 
     @FXML
     private void handleUpdate(ActionEvent event) {
-        Employee selectedEmployee = employeeTable.getSelectionModel().getSelectedItem();
-        if (selectedEmployee != null) {
-            try {
-                selectedEmployee.setFirstName(firstNameField.getText());
-                selectedEmployee.setLastName(lastNameField.getText());
-                selectedEmployee.setAge(Integer.parseInt(ageField.getText()));
-                selectedEmployee.setSalary(Double.parseDouble(salaryField.getText()));
-                selectedEmployee.setAnnualLeave(Integer.parseInt(annualLeaveField.getText()));
-
-                employeeTable.refresh();
-                clearFields();
-            } catch (NumberFormatException e) {
-                showAlert("Invalid Input", "Please enter valid numeric values.");
-            }
-        } else {
+        Employee selected = employeeTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
             showAlert("No Selection", "Please select an employee to update.");
+            return;
         }
+        Employee input = readForm();
+        if (input == null) {
+            return;
+        }
+        store.updateEmployee(selected, input.getFirstName(), input.getLastName(),
+                input.getAge(), input.getSalary(), input.getAnnualLeave());
+        employeeTable.refresh();
+        employeeTable.getSelectionModel().clearSelection();
+        clearFields();
     }
 
     @FXML
     private void handleDelete(ActionEvent event) {
-        Employee selectedEmployee = employeeTable.getSelectionModel().getSelectedItem();
-        if (selectedEmployee != null) {
-            employeeList.remove(selectedEmployee);
-        } else {
+        Employee selected = employeeTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
             showAlert("No Selection", "Please select an employee to delete.");
+            return;
+        }
+        store.deleteEmployee(selected);
+        clearFields();
+    }
+
+    /** Validates the form. Returns a new Employee with the typed values, or null after showing an alert. */
+    private Employee readForm() {
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String ageText = ageField.getText().trim();
+        String salaryText = salaryField.getText().trim();
+        String leaveText = annualLeaveField.getText().trim();
+
+        if (firstName.isEmpty() || lastName.isEmpty() || ageText.isEmpty()
+                || salaryText.isEmpty() || leaveText.isEmpty()) {
+            showAlert("Error", "Please fill in all fields!");
+            return null;
+        }
+        try {
+            int age = Integer.parseInt(ageText);
+            double salary = Double.parseDouble(salaryText);
+            int annualLeave = Integer.parseInt(leaveText);
+
+            if (age < 18 || age > 100) {
+                showAlert("Invalid Input", "Age must be between 18 and 100.");
+                return null;
+            }
+            if (salary < 0 || annualLeave < 0) {
+                showAlert("Invalid Input", "Salary and Annual Leave cannot be negative.");
+                return null;
+            }
+            return new Employee(firstName, lastName, age, salary, annualLeave);
+        } catch (NumberFormatException e) {
+            showAlert("Invalid Input", "Please enter valid numeric values for Age, Salary, and Annual Leave.");
+            return null;
         }
     }
 
@@ -149,9 +154,5 @@ public class EmployeeController extends Application {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
