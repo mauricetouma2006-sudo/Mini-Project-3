@@ -22,6 +22,8 @@ public class SignInController {
     @FXML
     private Label errorLabel;
 
+    private final AccountsStore accountsStore = new AccountsStore();
+
     @FXML
     private void handleSignIn() throws IOException {
         String username = usernameField.getText().trim();
@@ -33,8 +35,17 @@ public class SignInController {
             return;
         }
 
-        if (username.equals("admin") && password.equals("password")
-                || username.equals("admin1") && password.equals("password1")) {
+        boolean valid;
+        try {
+            // Check the credentials against the Accounts table (passwords are stored as SHA-256 hashes)
+            valid = accountsStore.checkLogin(username, password);
+        } catch (java.sql.SQLException e) {
+            errorLabel.setText("Cannot connect to the database. Is MySQL running?");
+            System.out.println(e);
+            return;
+        }
+
+        if (valid) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("HomeView.fxml"));
             Parent root = loader.load();
 

@@ -41,7 +41,7 @@
                         </Label>
                         <ImageView fitHeight="200.0" fitWidth="280.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <image>
-                                <Image url="@../../../../images/inventory.png" />
+                                <Image url="@../../../images/inventory.png" />
                             </image>
                         </ImageView>
                         <Label alignment="CENTER" prefHeight="40.0" prefWidth="114.0" text="EAN" GridPane.rowIndex="2">
