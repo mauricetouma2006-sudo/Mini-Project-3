@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class Database {
     private static final String URL = "jdbc:mysql://localhost:3306/miniproject3db";
     private static final String USER = "root";
-    private static final String PASSWORD = "123456";
+    private static final String PASSWORD = "Shromps77moon@@";
 
     public static Connection getConnection() throws SQLException {
         try {
