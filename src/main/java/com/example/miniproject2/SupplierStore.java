@@ -1,47 +1,110 @@
 package com.example.miniproject2;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * Holds the list of suppliers in memory (like PersonsStore and itemStore).
- * The controller asks this class to add, update and delete suppliers.
+ * Store for the Suppliers table (Mini Project 4: JDBC).
+ * Every operation is done on the MySQL database first, then the in-memory list
+ * shown by the TableView is updated to match.
  */
 public class SupplierStore {
     private final ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
 
     public SupplierStore() {
-        // Sample data so the table is not empty when the screen opens
-        suppliers.addAll(
-                new Supplier(1, "Office Plus", "01234567", "sales@officeplus.com", "Stationery"),
-                new Supplier(2, "Tech Source", "03987654", "contact@techsource.com", "Computers"),
-                new Supplier(3, "Paper House", "09112233", "info@paperhouse.com", "Paper"));
+        loadSuppliers();
+    }
+
+    /** SELECT: reads all suppliers from the database into the list. */
+    public void loadSuppliers() {
+        suppliers.clear();
+        String sql = "SELECT supplier_id, company_name, phone, email, product FROM Suppliers ORDER BY supplier_id";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                suppliers.add(new Supplier(
+                        rs.getInt("supplier_id"),
+                        rs.getString("company_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("product")));
+            }
+        } catch (SQLException e) {
+            System.out.println("Could not load suppliers: " + e.getMessage());
+        }
     }
 
     public ObservableList<Supplier> getSuppliers() {
         return suppliers;
     }
 
+    /** INSERT */
     public void addSupplier(Supplier supplier) {
-        if (supplier != null) {
+        if (supplier == null) {
+            return;
+        }
+        String sql = "INSERT INTO Suppliers (supplier_id, company_name, phone, email, product) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, supplier.getSupplierId());
+            stmt.setString(2, supplier.getCompanyName());
+            stmt.setString(3, supplier.getPhone());
+            stmt.setString(4, supplier.getEmail());
+            stmt.setString(5, supplier.getProduct());
+            stmt.executeUpdate();
             suppliers.add(supplier);
+        } catch (SQLException e) {
+            System.out.println("Could not add supplier: " + e.getMessage());
         }
     }
 
+    /** DELETE */
     public void deleteSupplier(Supplier supplier) {
-        if (supplier != null) {
+        if (supplier == null) {
+            return;
+        }
+        String sql = "DELETE FROM Suppliers WHERE supplier_id = ?";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, supplier.getSupplierId());
+            stmt.executeUpdate();
             suppliers.remove(supplier);
+        } catch (SQLException e) {
+            System.out.println("Could not delete supplier: " + e.getMessage());
         }
     }
 
+    /** UPDATE (the WHERE uses the old ID, so the ID itself can also be changed) */
     public void updateSupplier(Supplier supplier, int id, String companyName, String phone, String email,
             String product) {
-        if (supplier != null) {
+        if (supplier == null) {
+            return;
+        }
+        String sql = "UPDATE Suppliers SET supplier_id = ?, company_name = ?, phone = ?, email = ?, product = ? "
+                + "WHERE supplier_id = ?";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.setString(2, companyName);
+            stmt.setString(3, phone);
+            stmt.setString(4, email);
+            stmt.setString(5, product);
+            stmt.setInt(6, supplier.getSupplierId());
+            stmt.executeUpdate();
+
             supplier.setSupplierId(id);
             supplier.setCompanyName(companyName);
             supplier.setPhone(phone);
             supplier.setEmail(email);
             supplier.setProduct(product);
+        } catch (SQLException e) {
+            System.out.println("Could not update supplier: " + e.getMessage());
         }
     }
 
