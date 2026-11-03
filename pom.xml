@@ -26,6 +26,14 @@
             <version>17.0.6</version>
         </dependency>
 
+        <!-- MySQL JDBC driver (Mini Project 4) -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.29</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
