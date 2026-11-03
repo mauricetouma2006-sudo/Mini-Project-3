@@ -2,8 +2,6 @@ package com.example.miniproject2;
 
 import java.io.IOException;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class itemController {
@@ -40,8 +37,8 @@ public class itemController {
 
     @FXML
     private Label errorMsg;
+    // The store loads the Items table from MySQL and keeps the list in sync with the database
     private final itemStore ic = new itemStore();
-    private final ObservableList<Item> itemsList = ic.getItems();
 
     @FXML
     public void initialize() {
@@ -102,11 +99,14 @@ public class itemController {
             isValid = false;
         }
 
+        if (isValid && ic.eanExists(EAN, null)) {
+            error += "An item with this EAN already exists.\n";
+            isValid = false;
+        }
+
         if (isValid) {
             Item newItem = new Item(EAN, name, price, stock);
-            ic.addItem(newItem); // Ensure item is added to itemStore
-            itemsTable.setItems(FXCollections.observableArrayList(ic.getItems())); // Refresh table
-            itemsTable.refresh();
+            ic.addItem(newItem); // INSERT into the Items table, then add to the list
             clearFields();
         } else {
             errorMsg.setText(error);
@@ -116,6 +116,7 @@ public class itemController {
 
     @FXML
     void updateItem(ActionEvent event) {
+        errorMsg.setText("");
         Item selectedItem = itemsTable.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             errorMsg.setText("No item selected for update.");
@@ -128,11 +129,17 @@ public class itemController {
             double price = Double.parseDouble(priceFld.getText().trim());
             int stock = Integer.parseInt(stockFld.getText().trim());
 
-            selectedItem.setEAN(EAN);
-            selectedItem.setName(name);
-            selectedItem.setPrice(price);
-            selectedItem.setStock(stock);
+            if (name.isEmpty()) {
+                errorMsg.setText("You must enter an item Name.");
+                return;
+            }
+            if (ic.eanExists(EAN, selectedItem)) {
+                errorMsg.setText("An item with this EAN already exists.");
+                return;
+            }
 
+            // UPDATE the row in the Items table (found by the old EAN), then the Item object
+            ic.updateItem(selectedItem, EAN, name, price, stock);
             itemsTable.refresh();
             clearFields();
         } catch (NumberFormatException e) {
@@ -142,16 +149,14 @@ public class itemController {
 
     @FXML
     void deleteItem(ActionEvent event) {
+        errorMsg.setText("");
         Item selectedItem = itemsTable.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             errorMsg.setText("No item selected for deletion.");
             return;
         }
 
-        ic.removeItem(selectedItem);
-
-        itemsTable.setItems(FXCollections.observableArrayList(ic.getItems()));
-        itemsTable.refresh();
+        ic.removeItem(selectedItem); // DELETE from the Items table, then remove from the list
         clearFields();
     }
 
