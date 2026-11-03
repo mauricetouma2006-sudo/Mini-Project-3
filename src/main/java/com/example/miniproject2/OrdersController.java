@@ -1,6 +1,5 @@
 package com.example.miniproject2;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -53,7 +52,9 @@ public class OrdersController {
     @FXML
     private Button backButton;
 
-    private ObservableList<Order> orderList = FXCollections.observableArrayList();
+    // Mini Project 4: the orders now come from (and are saved to) the MySQL Orders table
+    private final OrdersStore store = new OrdersStore();
+    private ObservableList<Order> orderList = store.getOrders();
     private FilteredList<Order> filteredList;
 
     @FXML
@@ -152,7 +153,7 @@ public class OrdersController {
         return true;
     }
 
-    // Handles adding an order
+    // Handles adding an order (INSERT into the database)
     @FXML
     private void addOrder() {
         if (!validateInput(null)) {
@@ -163,11 +164,11 @@ public class OrdersController {
         LocalDate date = dateField.getValue();
         double total = Double.parseDouble(totalField.getText().trim());
 
-        orderList.add(new Order(id, customer, date, total));
+        store.addOrder(new Order(id, customer, date, total));
         clearFields();
     }
 
-    // Handles updating an order
+    // Handles updating an order (UPDATE in the database)
     @FXML
     private void updateOrder() {
         Order selectedOrder = ordersTable.getSelectionModel().getSelectedItem();
@@ -178,22 +179,23 @@ public class OrdersController {
         if (!validateInput(selectedOrder)) {
             return;
         }
-        selectedOrder.setOrderId(Integer.parseInt(orderIdField.getText().trim()));
-        selectedOrder.setCustomerName(customerNameField.getText().trim());
-        selectedOrder.setDate(dateField.getValue());
-        selectedOrder.setTotal(Double.parseDouble(totalField.getText().trim()));
+        store.updateOrder(selectedOrder,
+                Integer.parseInt(orderIdField.getText().trim()),
+                customerNameField.getText().trim(),
+                dateField.getValue(),
+                Double.parseDouble(totalField.getText().trim()));
 
         ordersTable.refresh();
         applySearch(); // re-apply the filter in case the edited order no longer matches
         clearFields();
     }
 
-    // Handles deleting an order
+    // Handles deleting an order (DELETE from the database)
     @FXML
     private void deleteOrder() {
         Order selectedOrder = ordersTable.getSelectionModel().getSelectedItem();
         if (selectedOrder != null) {
-            orderList.remove(selectedOrder);
+            store.deleteOrder(selectedOrder);
             clearFields();
         } else {
             showAlert("No Selection", "Please select an order to delete.");
